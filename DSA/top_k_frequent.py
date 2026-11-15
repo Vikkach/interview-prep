@@ -2,15 +2,39 @@
 
 class Solution:
     def topKFrequent(self, nums: List[int], k: int) -> List[int]:
-        c_hash = dict()
+class Solution:
+    def topKFrequent(self, nums: List[int], k: int) -> List[int]:
+        if not nums:
+            return []
+        el_freq_hash = dict()
         for n in nums:
-            c_hash[n] = c_hash.get(n, 0) + 1
-        freq = [[] for i in range(len(nums) + 1)]
-        for n, c in c_hash.items():
-            freq[c].append(n)
+            el_freq_hash[n] = el_freq_hash.get(n, 0) + 1
+
+        n_freq = max(el_freq_hash.values()) + 1
+        freq_list = [[] for _ in range(n_freq)]
+
+        for el, c in el_freq_hash.items():
+            stored_els = freq_list[c]
+            stored_els.append(el)
+            freq_list[c] = stored_els
         result = []
-        for f in reversed(freq):
-            if f != []:
-                for i in f:
-                    result.append(i)
+        freq_list.reverse()
+        for f in freq_list:
+            for i in f:
+                result.append(i)
         return result[:k]
+
+
+
+
+
+
+
+            
+
+
+
+
+                
+
+        
