@@ -1,30 +1,22 @@
-# Pattern: product for all non-zero numbers and division. Time: O(n), Space: O(n)
+# Pattern: 2 list with prefix and suffix products. Space: O(n), Time: O(n)
 class Solution:
     def productExceptSelf(self, nums: List[int]) -> List[int]:
-        output = [0]*len(nums)
-        zero_mult = 0
-        zero_count = 0
-        def mult(lst):
-            result = lst[0]
-            for l in lst[1:]:
-                result = result*l
-            return result
-
+        pref_prod = [0]*len(nums)
+        suff_prod = [0]*len(nums)
+        res = [0]*len(nums)
+        pref_prod[0] = 1
+        suff_prod[0] = 1
+        
         for i, n in enumerate(nums):
-            if n == 0:
-                zero_count += 1
-                if zero_count >= 2:
-                    return output
-                sublist = nums.copy()
-                sublist.remove(0)
-                zero_mult = mult(sublist)
-                output[i] = zero_mult
-                return output
+            if i < len(nums)-1:
+                pref_prod[i+1] = pref_prod[i]*n
 
-        all_mult = mult(nums)
-
-        for i, n in enumerate(nums):
-            output[i] = int(all_mult/n)
-        return output
+        for j, n in enumerate(reversed(nums)):
+            if j < len(nums)-1:
+                suff_prod[j+1] = suff_prod[j]*n
+        
+        for k in range(len(nums)):
+            res[k] = pref_prod[k]*suff_prod[len(nums)-1-k]
+        return res
 
         
